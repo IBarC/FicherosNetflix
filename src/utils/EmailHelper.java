@@ -1,6 +1,6 @@
 package utils;
 
-public class Email {
+public class EmailHelper {
 	
 	public static void sendForgotPassword() {
 		sendEmail();
