@@ -8,8 +8,13 @@ CREATE TABLE if not exists `ficherosnetflix`.`users` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE);
 
-insert into users(id, username, password)
-values (
-1, "a", "a");
-
+ALTER TABLE `ficherosnetflix`.`users` 
+ADD COLUMN `email` VARCHAR(60) NOT NULL AFTER `password`,
+CHANGE COLUMN `id` `id` INT NULL ,
+CHANGE COLUMN `username` `username` VARCHAR(45) NOT NULL ,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`email`, `username`),
+ADD UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE;
+;
+delete from users;
 select * from users;
