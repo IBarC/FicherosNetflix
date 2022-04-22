@@ -23,6 +23,16 @@ public class CredentialsHelper {
 		return readFromSettingsFile("passwordDB");
 
 	}
+	
+	public static String readEmail() {
+		return readFromSettingsFile("email");
+
+	}
+	
+	public static String readPasswordrEmail() {
+		return readFromSettingsFile("passwordEmail");
+
+	}
 
 	private static String readFromSettingsFile(String keyword) {
 		List<String> list;

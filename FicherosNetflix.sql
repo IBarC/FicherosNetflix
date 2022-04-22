@@ -18,3 +18,16 @@ ADD UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE;
 ;
 delete from users;
 select * from users;
+
+ALTER TABLE `ficherosnetflix`.`users` 
+CHANGE COLUMN `password` `password` VARCHAR(255) NULL DEFAULT NULL ;
+
+ALTER TABLE `ficherosnetflix`.`users` 
+CHANGE COLUMN `id` `id` VARCHAR(5) NULL DEFAULT NULL ;
+
+ALTER TABLE `ficherosnetflix`.`users` 
+DROP COLUMN `username`,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`email`),
+DROP INDEX `username_UNIQUE` ;
+

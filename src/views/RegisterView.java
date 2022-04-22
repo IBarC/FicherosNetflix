@@ -14,6 +14,9 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import dao.UsuarioDAO;
+import models.Usuario;
+import snippet.Emailing;
+import utils.EmailHelper;
 
 import javax.swing.JTextField;
 
@@ -26,16 +29,15 @@ public class RegisterView {
 	private JLabel lblNewLabel_2;
 	private JLabel label;
 	private JLabel lblNewLabel_3;
-	private JTextField txtUsuario;
 	private JPasswordField password;
 	private JPasswordField repeatPassword;
-	private JLabel lblNewLabel;
 	private JTextField txtCorreo;
 	private JLabel lblEmain;
 	private JLabel lblContrasea;
 	private JLabel lblRepetirContrasenia;
 	private JButton btnCrearCuenta;
 	private UsuarioDAO usuariodao;
+	private JButton btnValidarCdigo;
 
 	/**
 	 * Create the application.
@@ -60,16 +62,9 @@ public class RegisterView {
 
 	private void configureUIComponents() {
 		logo = new JLabel("");
-		logo.setIcon(new ImageIcon(
-				"C:\\Users\\Irene\\Desktop\\CFGS\\1\u00BA\\Programacion\\Netflix\\src\\assets\\Netflix2.png"));
+		logo.setIcon(new ImageIcon(RegisterView.class.getResource("/assets/Netflix2.png")));
 		logo.setBounds(27, 27, 238, 90);
 		frame.getContentPane().add(logo);
-		// frame.setIconImage(new ImageIcon("/assets/Fondo-inicio.jpg").getImage());
-
-//			fondo = new JLabel("");
-//			fondo.setIcon(new ImageIcon("C:\\Users\\Irene\\Desktop\\CFGS\\1\u00BA\\Programacion\\Netflix\\src\\assets\\Fondo-inicio.jpg"));
-//			fondo.setBounds(837, 391, 1289, 699);
-//			frame.getContentPane().add(fondo);
 
 		btnIniciarSesion = new JButton("Iniciar sesi\u00F3n");
 		btnIniciarSesion.setFont(new Font("Yu Gothic UI", Font.BOLD, 24));
@@ -82,7 +77,7 @@ public class RegisterView {
 		lblNewLabel_2.setFont(new Font("Yu Gothic UI", Font.BOLD, 46));
 		lblNewLabel_2.setForeground(new Color(255, 255, 255));
 		lblNewLabel_2.setToolTipText("");
-		lblNewLabel_2.setBounds(241, 83, 572, 105);
+		lblNewLabel_2.setBounds(241, 103, 572, 105);
 		frame.getContentPane().add(lblNewLabel_2);
 
 		label = new JLabel();
@@ -93,26 +88,19 @@ public class RegisterView {
 		lblNewLabel_3.setToolTipText("");
 		lblNewLabel_3.setForeground(Color.WHITE);
 		lblNewLabel_3.setFont(new Font("Yu Gothic UI", Font.BOLD, 46));
-		lblNewLabel_3.setBounds(241, 138, 572, 105);
+		lblNewLabel_3.setBounds(241, 158, 572, 105);
 		frame.getContentPane().add(lblNewLabel_3);
-
-		txtUsuario = new JTextField();
-		txtUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-		txtUsuario.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		txtUsuario.setBounds(311, 254, 429, 41);
-		frame.getContentPane().add(txtUsuario);
-		txtUsuario.setColumns(10);
 
 		password = new JPasswordField();
 		password.setHorizontalAlignment(SwingConstants.CENTER);
 		password.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		password.setBounds(311, 397, 429, 41);
+		password.setBounds(311, 376, 429, 41);
 		frame.getContentPane().add(password);
 
 		repeatPassword = new JPasswordField();
 		repeatPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		repeatPassword.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		repeatPassword.setBounds(311, 468, 429, 41);
+		repeatPassword.setBounds(311, 447, 429, 41);
 		frame.getContentPane().add(repeatPassword);
 
 		btnCrearCuenta = new JButton("Crear cuenta");
@@ -122,40 +110,40 @@ public class RegisterView {
 		btnCrearCuenta.setBounds(810, 493, 208, 41);
 		frame.getContentPane().add(btnCrearCuenta);
 
-		lblNewLabel = new JLabel("Nombre de usuario:");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		lblNewLabel.setForeground(Color.LIGHT_GRAY);
-		lblNewLabel.setBounds(120, 254, 181, 41);
-		frame.getContentPane().add(lblNewLabel);
-
 		txtCorreo = new JTextField();
 		txtCorreo.setHorizontalAlignment(SwingConstants.CENTER);
 		txtCorreo.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
 		txtCorreo.setColumns(10);
-		txtCorreo.setBounds(311, 323, 429, 41);
+		txtCorreo.setBounds(311, 302, 429, 41);
 		frame.getContentPane().add(txtCorreo);
 
 		lblEmain = new JLabel("Correo electr\u00F3nico:");
 		lblEmain.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblEmain.setForeground(Color.LIGHT_GRAY);
 		lblEmain.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		lblEmain.setBounds(120, 323, 181, 41);
+		lblEmain.setBounds(120, 302, 181, 41);
 		frame.getContentPane().add(lblEmain);
 
 		lblContrasea = new JLabel("Contrase\u00F1a:");
 		lblContrasea.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblContrasea.setForeground(Color.LIGHT_GRAY);
 		lblContrasea.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		lblContrasea.setBounds(120, 397, 181, 41);
+		lblContrasea.setBounds(120, 376, 181, 41);
 		frame.getContentPane().add(lblContrasea);
 
 		lblRepetirContrasenia = new JLabel("Repetir contrase\u00F1a:");
 		lblRepetirContrasenia.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblRepetirContrasenia.setForeground(Color.LIGHT_GRAY);
 		lblRepetirContrasenia.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		lblRepetirContrasenia.setBounds(120, 468, 181, 41);
+		lblRepetirContrasenia.setBounds(120, 447, 181, 41);
 		frame.getContentPane().add(lblRepetirContrasenia);
+
+		btnValidarCdigo = new JButton("Validar cuenta");
+		btnValidarCdigo.setForeground(Color.WHITE);
+		btnValidarCdigo.setFont(new Font("Yu Gothic UI", Font.BOLD, 24));
+		btnValidarCdigo.setBackground(new Color(255, 69, 0));
+		btnValidarCdigo.setBounds(810, 431, 208, 41);
+		frame.getContentPane().add(btnValidarCdigo);
 		frame.setBounds(100, 100, 1056, 582);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -163,6 +151,7 @@ public class RegisterView {
 	private void configureListeners() {
 		btnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
 				new LoginView();
 			}
 		});
@@ -172,30 +161,80 @@ public class RegisterView {
 				comprobarUsuario();
 			}
 		});
+
+		btnValidarCdigo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String emailIntroducido = JOptionPane.showInputDialog(btnCrearCuenta,
+						"Por favor introduzca su correo.");
+				if (usuariodao.buscarEmail(emailIntroducido)) {
+					JOptionPane.showMessageDialog(btnCrearCuenta,
+							"Hemos enviado un código al correo introducido. Por favor revise su bandeja de entrada");
+
+					if (comprobarCodigo(emailIntroducido)) {
+						JOptionPane.showMessageDialog(btnCrearCuenta, "La cuenta se ha validado con éxito");
+						frame.dispose();
+						new LoginView();
+					}
+				} else {
+					JOptionPane.showMessageDialog(btnCrearCuenta,
+							"El correo no existe. Cree primero una cuenta antes de intentar validarla.");
+				}
+			}
+		});
 	}
 
-	private boolean comprobarUsuario() {
+	private void comprobarUsuario() {
 		// comprueba con un select que tanto el usuario como el email no existen en la
 		// base de datos
 		// si no estan que compruebe que las contraseñas son iguales
 		// si todo esta bien --> comprobarCodigo()
-		String usuario = this.txtUsuario.getText();
 		String email = this.txtCorreo.getText();
+		String passw1 = new String(this.password.getPassword());
+		String passw2 = new String(this.repeatPassword.getPassword());
 
-		if (usuariodao.buscarNombre(usuario) || usuariodao.buscarEmail(email)) {
-
+		if (email.isEmpty() || passw1.isEmpty() || passw2.isEmpty()) {
+			JOptionPane.showMessageDialog(btnCrearCuenta, "Los campos no pueden estar vacios");
+		} else if (usuariodao.buscarEmail(email)) {
+			JOptionPane.showMessageDialog(btnCrearCuenta, "El nombre de usuario o el correo ya existe");
+		} else {
+			if (passw1.equals(passw2)) {
+				String hashPassword = Emailing.hashIt(passw1, passw1);
+				usuariodao.register(new Usuario(hashPassword, email));
+				JOptionPane.showMessageDialog(btnCrearCuenta,
+						"La cuenta se ha creado con éxito.\nHemos enviado un código al correo introducido. Por favor revise su bandeja de entrada");
+				comprobarCodigo(email);
+			} else {
+				JOptionPane.showMessageDialog(btnCrearCuenta, "Las contraseñas no coinciden");
+			}
 		}
-
-		return false;
 	}
 
 	private int generarCodigo() {
-		return (int) (Math.random() * 10000 + 1);
+		return (int) (Math.random() * (10000 - 1000 + 1) + 1000);
 	}
 
-	private void comprobarCodigo() {
+	/**
+	 * 
 		// si el codigo que manda es correcto crea el usuario
 		// mientras que el codigo introducido sea invalido mandará correos con codigos
 		// distintos hasta que meta el correcto
+	 * @param correo
+	 * @return
+	 */
+	private boolean comprobarCodigo(String correo) {
+		String codigoGenerado = generarCodigo() + ""; // Código que tiene que introducir el usuario
+		EmailHelper.sendValidationCode(correo, codigoGenerado);
+		String codigoIntroducido = JOptionPane.showInputDialog(btnCrearCuenta,
+				"Escriba aquí el código que ha recibido.");
+		if (!codigoGenerado.equals(codigoIntroducido)) {
+			JOptionPane.showMessageDialog(btnCrearCuenta, "El código introducido es incorrecto");
+		} else {
+			usuariodao.insertCode(codigoGenerado, correo);
+			JOptionPane.showMessageDialog(btnCrearCuenta, "La cuenta se ha validado con éxito");
+			frame.dispose();
+			new SearchView(correo);
+			return true;
+		}
+		return false;
 	}
 }

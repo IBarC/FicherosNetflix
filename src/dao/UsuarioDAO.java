@@ -9,7 +9,7 @@ import java.sql.Statement;
 import models.Usuario;
 
 public class UsuarioDAO {
-	
+
 	final String DB_URL = "jdbc:mysql://localhost/ficherosNetflix";
 	final String USER = "Irene"; // Nombre de usuario que se crea en users and privileges
 	final String PASS = "irene";
@@ -31,9 +31,9 @@ public class UsuarioDAO {
 		}
 	}
 
-	public boolean login(Usuario usuario) {
-		final String QUERY = "SELECT username, password from users where " + "username = '" + usuario.getUsername()
-				+ "' and " + "password = '" + usuario.getPassword() + "'";
+	public boolean loginEmail(Usuario usuario) {
+		final String QUERY = "SELECT email, password from users where " + "email = '" + usuario.getEmail() + "' and "
+				+ "password = '" + usuario.getPassword() + "'";
 
 		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 				Statement stmt = conn.createStatement();
@@ -47,8 +47,8 @@ public class UsuarioDAO {
 	}
 
 	public void register(Usuario usuario) {
-		final String INSERT = "INSERT INTO users (username, password, email) VALUES ('" + usuario.getUsername() + "', '"
-				+ usuario.getPassword() + "', " + usuario.getEmail() + ")";
+		final String INSERT = "INSERT INTO users (password, email) VALUES ('" + usuario.getPassword() + "', '"
+				+ usuario.getEmail() + "')";
 
 		try {
 			Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -60,20 +60,19 @@ public class UsuarioDAO {
 		}
 	}
 
-	public boolean buscarNombre(String usuario) {
-		final String SELECT = "SELECT usersname from users where usersname = '" + usuario + "';";
+	public void insertCode(String code, String email) {
+		final String INSERT = "UPDATE users SET id = '" + code + "' WHERE email = '" + email + "'";
 
-		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(SELECT);) {
-			return rs.next();
+		try {
+			Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(INSERT);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
 	}
-	
+
 	public boolean buscarEmail(String email) {
 		final String SELECT = "SELECT email from users where email = '" + email + "';";
 
@@ -87,6 +86,5 @@ public class UsuarioDAO {
 		}
 		return false;
 	}
-	
-	
+
 }
