@@ -1,8 +1,6 @@
 package mainapp;
 
-import utils.CredentialsHelper;
 import views.RegisterView;
-import views.LoginView;
 
 public class MainApp {
 

@@ -159,8 +159,8 @@ public class LoginView {
 	private void comprobarLogin() {
 		String usuario = txtUsuario.getText();
 		String passw = new String(password.getPassword());
-
-		if (usuario.isEmpty() || passw.isEmpty()) {
+		
+		if (usuario.isEmpty() || passw.isEmpty() ) {
 			JOptionPane.showMessageDialog(btnCrearCuenta, "Los campos no pueden estar vacios");
 		} else if (usuario.contains("@gmail.com") || usuario.contains("@iespablopicasso.es")) {
 			if (usuarioDAO.buscarEmail(usuario)) {

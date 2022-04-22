@@ -72,6 +72,20 @@ public class UsuarioDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean buscarCodigo(String email) {
+		final String SELECT = "SELECT id from users where email = '" + email + "';";
+
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(SELECT);) {
+			return rs.next();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	public boolean buscarEmail(String email) {
 		final String SELECT = "SELECT email from users where email = '" + email + "';";
