@@ -31,3 +31,20 @@ DROP PRIMARY KEY,
 ADD PRIMARY KEY (`email`),
 DROP INDEX `username_UNIQUE` ;
 
+CREATE TABLE `ficherosnetflix`.`shows` (
+  `show_id` VARCHAR(10) NOT NULL,
+  `type` VARCHAR(45) NULL,
+  `title` VARCHAR(255) NULL,
+  `director` VARCHAR(45) NULL,
+  `cast` VARCHAR(255) NULL,
+  `country` VARCHAR(45) NULL,
+  `date_added` VARCHAR(45) NULL,
+  `release_year` VARCHAR(45) NULL,
+  `rating` VARCHAR(45) NULL,
+  `duration` VARCHAR(45) NULL,
+  `listed_in` VARCHAR(255) NULL,
+  `description` LONGTEXT NULL,
+  PRIMARY KEY (`show_id`));
+
+select * from shows;
+delete from shows; 
