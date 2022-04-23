@@ -20,6 +20,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class LoginView {
 
@@ -34,6 +37,7 @@ public class LoginView {
 	private JButton btnIniciarSesion;
 	private JButton btnCrearCuenta;
 	private JButton btnValidarCdigo;
+	private JLabel lblAparece;
 
 	/**
 	 * Create the application.
@@ -119,6 +123,10 @@ public class LoginView {
 		btnValidarCdigo.setBackground(new Color(255, 69, 0));
 		btnValidarCdigo.setBounds(824, 493, 208, 41);
 		frLogin.getContentPane().add(btnValidarCdigo);
+
+		lblAparece = new JLabel("");
+		lblAparece.setBounds(880, 79, 49, 14);
+		frLogin.getContentPane().add(lblAparece);
 	}
 
 	private void configureListeners() {
@@ -134,7 +142,7 @@ public class LoginView {
 				new RegisterView();
 			}
 		});
-		
+
 		btnValidarCdigo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String emailIntroducido = JOptionPane.showInputDialog(btnValidarCdigo,
@@ -159,12 +167,13 @@ public class LoginView {
 	private void comprobarLogin() {
 		String usuario = txtUsuario.getText();
 		String passw = new String(password.getPassword());
-		
-		if (usuario.isEmpty() || passw.isEmpty() ) {
+
+		if (usuario.isEmpty() || passw.isEmpty()) {
 			JOptionPane.showMessageDialog(btnCrearCuenta, "Los campos no pueden estar vacios");
 		} else if (usuario.contains("@gmail.com") || usuario.contains("@iespablopicasso.es")) {
 			if (usuarioDAO.buscarEmail(usuario)) {
 				if (usuarioDAO.loginEmail(new Usuario(Emailing.hashIt(passw, passw), usuario))) {
+					configFichero(); // primero pide la configuración del ficehero
 					frLogin.dispose();
 					new SearchView(usuario);
 				}
@@ -175,16 +184,17 @@ public class LoginView {
 			JOptionPane.showMessageDialog(btnIniciarSesion, "La dirección de correo no es válida");
 		}
 	}
-	
+
 	private int generarCodigo() {
 		return (int) (Math.random() * (10000 - 1000 + 1) + 1000);
 	}
 
 	/**
 	 * 
-		// si el codigo que manda es correcto crea el usuario
-		// mientras que el codigo introducido sea invalido mandará correos con codigos
-		// distintos hasta que meta el correcto
+	 * // si el codigo que manda es correcto crea el usuario // mientras que el
+	 * codigo introducido sea invalido mandará correos con codigos // distintos
+	 * hasta que meta el correcto
+	 * 
 	 * @param correo
 	 * @return
 	 */
@@ -202,6 +212,33 @@ public class LoginView {
 		}
 		return false;
 
+	}
+
+	private String configFichero() {
+		String nombreFichero = JOptionPane.showInputDialog("Antes de realizar la búsqueda nos gustaría saber el nombre"
+				+ "\ndel fichero que quieres usar para introducir tus shows favoritos.");
+
+		File f = new File(nombreFichero + ".csv");
+
+		if (!f.exists()) {
+			try {
+				FileWriter fw = new FileWriter("/assets.files/" + nombreFichero + ".csv", true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		configSeparador();
+		return nombreFichero;
+	}
+
+	private String configSeparador() {
+		String[] opciones = { "Coma", "Punto y coma", "Tabulador" };
+		String separador = (String) JOptionPane.showInternalInputDialog(lblAparece, "¿Qué separador quieres usar?",
+				"Elije el separador", JOptionPane.QUESTION_MESSAGE, null, opciones, "Coma");
+		// saber que es lo que devuelve y a raiz de ahi elegir el separador
+		// correspondiente
+
+		return separador;
 	}
 
 }

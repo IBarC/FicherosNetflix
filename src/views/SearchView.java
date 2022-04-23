@@ -49,7 +49,7 @@ public class SearchView {
 		frame.getContentPane().setLayout(null);
 
 		configureUIComponents();
-		
+
 		configureListeners();
 	}
 
@@ -139,10 +139,6 @@ public class SearchView {
 			new ShowsView(0, searchFilter, txtABuscar);
 		}
 
-	}
-	
-	private void configFichero() {
-		
 	}
 
 }
