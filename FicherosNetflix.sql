@@ -47,4 +47,3 @@ CREATE TABLE `ficherosnetflix`.`shows` (
   PRIMARY KEY (`show_id`));
 
 select * from shows;
-delete from shows; 
