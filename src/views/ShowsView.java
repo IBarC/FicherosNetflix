@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 
 import dao.ShowDAO;
 import models.Show;
+import utils.ShowsHelper;
 
 import javax.swing.ImageIcon;
 import java.awt.Font;
@@ -37,19 +38,23 @@ public class ShowsView {
 	private JButton btnVolverABuscar;
 	private JButton btnSigueinte;
 	private JButton btnAtras;
-	private JToggleButton tglbtnFavourite;
+	private JButton btnFavourite;
 	private ShowDAO showdao;
 	private int contShows;
 	private ArrayList<Show> shows;
+	private String nombreFichero;
+	private String separador;
 
 	/**
 	 * Create the application.
 	 */
-	public ShowsView(int contShows, String searchFilter, String txtABuscar) {
+	public ShowsView(int contShows, String searchFilter, String txtABuscar, String nombreFichero, String separador) {
 		this.shows = new ArrayList<Show>();
 		this.showdao = new ShowDAO();
 		this.shows = showdao.search(searchFilter, txtABuscar);
-
+		this.nombreFichero = nombreFichero;
+		this.separador = separador;
+		
 		initialize();
 		this.frame.setVisible(true);
 		printShow();
@@ -156,42 +161,39 @@ public class ShowsView {
 		btnAtras.setBackground(new Color(255, 69, 0));
 		btnAtras.setBounds(10, 267, 70, 41);
 		frame.getContentPane().add(btnAtras);
-		
-		tglbtnFavourite = new JToggleButton("");
-		tglbtnFavourite.setSelectedIcon(new ImageIcon(ShowsView.class.getResource("/assets/estrella-rellena33.png")));
-		tglbtnFavourite.setIcon(new ImageIcon(ShowsView.class.getResource("/assets/estrella33.png")));
-		tglbtnFavourite.setBackground(Color.BLACK);
-		tglbtnFavourite.setBounds(921, 116, 60, 60);
-		frame.getContentPane().add(tglbtnFavourite);
+
+		btnFavourite = new JButton("");
+		btnFavourite.setIcon(new ImageIcon(ShowsView.class.getResource("/assets/estrella33.png")));
+		btnFavourite.setBackground(Color.BLACK);
+		btnFavourite.setBounds(921, 116, 60, 60);
+		frame.getContentPane().add(btnFavourite);
 		frame.setBounds(100, 100, 1056, 582);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	private void configureListeners() {
-		tglbtnFavourite.addActionListener(new ActionListener() {
+		btnFavourite.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (tglbtnFavourite.isSelected()) {
-					tglbtnFavourite.setIcon(new ImageIcon(ShowsView.class.getResource("/assets/estrella-rellena33.png")));
-					tglbtnFavourite.setBackground(Color.BLACK);
-				} else {
-					tglbtnFavourite.setIcon(new ImageIcon(ShowsView.class.getResource("/assets/estrella33.png")));
-				}
+				btnFavourite.setIcon(new ImageIcon(ShowsView.class.getResource("/assets/estrella-rellena33.png")));
+				Show s = shows.get(contShows);
+				new ShowsHelper().aniadirFavs(nombreFichero, separador, s);
 			}
+
 		});
-		
+
 		btnSigueinte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				printDelante();
 			}
 		});
-		
+
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				printAtras();
 			}
 		});
 	}
-	
+
 	private void printShow() {
 		Show s = shows.get(contShows);
 		lblTitle.setText(s.getTitle());
@@ -205,8 +207,9 @@ public class ShowsView {
 		lblRating.setText(s.getRating());
 		lblListed_In.setText(s.getListed_in());
 	}
-	
+
 	private void printAtras() {
+		btnFavourite.setIcon(new ImageIcon(ShowsView.class.getResource("/assets/estrella33.png")));
 		contShows--;
 		if (contShows < 0) {
 			contShows = shows.size() - 1;
@@ -215,10 +218,12 @@ public class ShowsView {
 	}
 
 	private void printDelante() {
+		btnFavourite.setIcon(new ImageIcon(ShowsView.class.getResource("/assets/estrella33.png")));
 		contShows++;
 		if (contShows == shows.size()) {
 			contShows = 0;
 		}
 		printShow();
 	}
+	
 }

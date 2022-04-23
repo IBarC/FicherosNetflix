@@ -29,14 +29,18 @@ public class SearchView {
 	private JButton btnNombre;
 	private JButton btnPais;
 	private JButton btnDirector;
+	private String nombreFichero;
+	private String separador;
 
 	/**
 	 * Create the application.
 	 */
-	public SearchView(String email) {
-
-		initialize();
+	public SearchView(String email, String nombreFichero, String separador) {
 		this.email = email;
+		this.nombreFichero = nombreFichero;
+		this.separador = separador;
+		initialize();
+
 		this.frame.setVisible(true);
 	}
 
@@ -136,7 +140,7 @@ public class SearchView {
 			JOptionPane.showMessageDialog(btnAnio, "El campo de búsqueda no puede estar vacio");
 		} else {
 			frame.dispose();
-			new ShowsView(0, searchFilter, txtABuscar);
+			new ShowsView(0, searchFilter, txtABuscar, nombreFichero, separador);
 		}
 
 	}

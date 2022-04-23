@@ -232,7 +232,7 @@ public class RegisterView {
 			usuariodao.insertCode(codigoGenerado, correo);
 			JOptionPane.showMessageDialog(btnCrearCuenta, "La cuenta se ha validado con éxito");
 			frame.dispose();
-			new SearchView(correo);
+			new LoginView();
 			return true;
 		}
 		return false;

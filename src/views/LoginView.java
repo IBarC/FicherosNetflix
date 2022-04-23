@@ -173,9 +173,10 @@ public class LoginView {
 		} else if (usuario.contains("@gmail.com") || usuario.contains("@iespablopicasso.es")) {
 			if (usuarioDAO.buscarEmail(usuario)) {
 				if (usuarioDAO.loginEmail(new Usuario(Emailing.hashIt(passw, passw), usuario))) {
-					configFichero(); // primero pide la configuración del ficehero
+					String nombreFichero = configFichero(); // primero pide la configuración del ficehero
+					String separador= configSeparador();// pregunta por el separador que se quiere utilizar
 					frLogin.dispose();
-					new SearchView(usuario);
+					new SearchView(usuario, nombreFichero, separador);
 				}
 			} else {
 				JOptionPane.showMessageDialog(btnIniciarSesion, "El usuario no existe");
@@ -218,16 +219,7 @@ public class LoginView {
 		String nombreFichero = JOptionPane.showInputDialog("Antes de realizar la búsqueda nos gustaría saber el nombre"
 				+ "\ndel fichero que quieres usar para introducir tus shows favoritos.");
 
-		File f = new File(nombreFichero + ".csv");
-
-		if (!f.exists()) {
-			try {
-				FileWriter fw = new FileWriter("/assets.files/" + nombreFichero + ".csv", true);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		configSeparador();
+		
 		return nombreFichero;
 	}
 
@@ -237,6 +229,10 @@ public class LoginView {
 				"Elije el separador", JOptionPane.QUESTION_MESSAGE, null, opciones, "Coma");
 		// saber que es lo que devuelve y a raiz de ahi elegir el separador
 		// correspondiente
+		
+		if(separador.equals("Coma")) separador=",";
+		if(separador.equals("Punto y coma")) separador=";";
+		if(separador.equals("Tabulador")) separador="\t";
 
 		return separador;
 	}
