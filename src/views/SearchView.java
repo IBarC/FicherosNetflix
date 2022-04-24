@@ -132,6 +132,13 @@ public class SearchView {
 				goToShows("release_year");
 			}
 		});
+		
+		btnCerrarSesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				new LoginView();
+			}
+		});
 	}
 
 	private void goToShows(String searchFilter) {

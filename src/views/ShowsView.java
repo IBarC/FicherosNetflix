@@ -198,6 +198,13 @@ public class ShowsView {
 				printAtras();
 			}
 		});
+		
+		btnVolverABuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				new SearchView("", nombreFichero, separador);
+			}
+		});
 	}
 
 	private void printShow() {
