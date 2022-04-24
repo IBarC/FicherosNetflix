@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import dao.ShowDAO;
 import models.Show;
@@ -55,10 +56,15 @@ public class ShowsView {
 		this.shows = showdao.search(searchFilter, txtABuscar);
 		this.nombreFichero = nombreFichero;
 		this.separador = separador;
-		
-		initialize();
-		this.frame.setVisible(true);
-		printShow();
+
+		if (shows.isEmpty()) {
+			JOptionPane.showMessageDialog(btnFavourite, "No existen ni shows ni películas con esta referencia");
+			new SearchView("", nombreFichero, separador);
+		} else {
+			initialize();
+			this.frame.setVisible(true);
+			printShow();
+		}
 	}
 
 	/**
@@ -71,6 +77,7 @@ public class ShowsView {
 
 		configureUIComponents();
 		configureListeners();
+
 	}
 
 	private void configureUIComponents() {
@@ -177,11 +184,12 @@ public class ShowsView {
 			public void actionPerformed(ActionEvent e) {
 				btnFavourite.setIcon(new ImageIcon(ShowsView.class.getResource("/assets/estrella-rellena33.png")));
 				Show s = shows.get(contShows);
-				
+
 				boolean existe = new File("src/assets/files/" + nombreFichero + ".csv").exists();
-				
-				if(existe) separador = new ShowsHelper().getSeparador(nombreFichero);
-				
+
+				if (existe)
+					separador = new ShowsHelper().getSeparador(nombreFichero);
+
 				new ShowsHelper().aniadirFavs(nombreFichero, separador, s);
 			}
 
@@ -198,7 +206,7 @@ public class ShowsView {
 				printAtras();
 			}
 		});
-		
+
 		btnVolverABuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
@@ -238,5 +246,5 @@ public class ShowsView {
 		}
 		printShow();
 	}
-	
+
 }
