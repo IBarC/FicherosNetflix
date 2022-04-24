@@ -1,6 +1,9 @@
 package utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -13,6 +16,8 @@ public class ShowsHelper {
 
 		try {
 			File f = new File("src/assets/files/" + nombreFichero + ".csv");
+			boolean existeFichero = f.exists();
+
 			FileWriter fw = new FileWriter(f, true);
 			boolean esta = false;
 
@@ -22,8 +27,11 @@ public class ShowsHelper {
 					+ s.getDuration() + separador + s.getListed_in() + separador + s.getDescription() + "\n";
 
 			Scanner sc = null;
-
 			sc = new Scanner(f, "UTF-8");
+
+			if (!existeFichero) {
+				fw.write(separador + ":\n");
+			}
 
 			if (sc.hasNextLine()) {
 				while (sc.hasNextLine()) {
@@ -47,6 +55,28 @@ public class ShowsHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public String getSeparador(String nombreFichero) {
+		String separador="";
+		File f = new File("src/assets/files/" + nombreFichero + ".csv");
+
+		try {
+			FileReader fr = new FileReader(f);
+			BufferedReader br = new BufferedReader(fr);
+			var trozos = br.readLine().split(":");
+			if (trozos[0].isBlank()) {
+				separador = "\t";
+			} else {
+				separador = trozos[0];
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return separador;
 	}
 
 }

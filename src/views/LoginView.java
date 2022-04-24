@@ -170,11 +170,21 @@ public class LoginView {
 
 		if (usuario.isEmpty() || passw.isEmpty()) {
 			JOptionPane.showMessageDialog(btnCrearCuenta, "Los campos no pueden estar vacios");
+
 		} else if (usuario.contains("@gmail.com") || usuario.contains("@iespablopicasso.es")) {
+
 			if (usuarioDAO.buscarEmail(usuario)) {
+
 				if (usuarioDAO.loginEmail(new Usuario(Emailing.hashIt(passw, passw), usuario))) {
 					String nombreFichero = configFichero(); // primero pide la configuración del ficehero
-					String separador= configSeparador();// pregunta por el separador que se quiere utilizar
+
+					File f = new File("src/assets/files/" +nombreFichero + ".csv");
+					String separador = "";
+
+					if (!f.exists()) {
+						separador = configSeparador();// pregunta por el separador que se quiere utilizar
+					}
+
 					frLogin.dispose();
 					new SearchView(usuario, nombreFichero, separador);
 				}
@@ -219,7 +229,6 @@ public class LoginView {
 		String nombreFichero = JOptionPane.showInputDialog("Antes de realizar la búsqueda nos gustaría saber el nombre"
 				+ "\ndel fichero que quieres usar para introducir tus shows favoritos.");
 
-		
 		return nombreFichero;
 	}
 
@@ -229,11 +238,16 @@ public class LoginView {
 				"Elije el separador", JOptionPane.QUESTION_MESSAGE, null, opciones, "Coma");
 		// saber que es lo que devuelve y a raiz de ahi elegir el separador
 		// correspondiente
-		
-		if(separador.equals("Coma")) separador=",";
-		if(separador.equals("Punto y coma")) separador=";";
-		if(separador.equals("Tabulador")) separador="\t";
 
+		if (separador.equals("Coma"))
+			separador = ",";
+		if (separador.equals("Punto y coma"))
+			separador = ";";
+		if (separador.equals("Tabulador"))
+			separador = "\t";
+
+		if(separador.equals(null)) separador ="";
+		
 		return separador;
 	}
 

@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
@@ -176,6 +177,11 @@ public class ShowsView {
 			public void actionPerformed(ActionEvent e) {
 				btnFavourite.setIcon(new ImageIcon(ShowsView.class.getResource("/assets/estrella-rellena33.png")));
 				Show s = shows.get(contShows);
+				
+				boolean existe = new File("src/assets/files/" + nombreFichero + ".csv").exists();
+				
+				if(existe) separador = new ShowsHelper().getSeparador(nombreFichero);
+				
 				new ShowsHelper().aniadirFavs(nombreFichero, separador, s);
 			}
 
